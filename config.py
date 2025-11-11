@@ -22,7 +22,7 @@ DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 1700))
 LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", None))
 
 # Get this value from @MissRose_Bot on Telegram by /id
-OWNER_ID = int(getenv("OWNER_ID", None))
+OWNER_ID = int(getenv("OWNER_ID", "1452370643"))
 
 ## Fill these variables if you're deploying on heroku.
 # Your heroku app name
@@ -30,8 +30,8 @@ HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 # Get it from http://dashboard.heroku.com/account
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
 
-API_URL = getenv("API_URL", 'https://tgmusic.fallenapi.fun') #youtube song url
-API_KEY = getenv("API_KEY", '26baf2_2wi-UCXNMoPGxDX1vmH-oiLUJow6jhPH') # youtube song api key, generate free key or buy paid plan from panel.thequickearn.xyz
+API_URL = getenv("API_URL", "https://tgmusic.fallenapi.fun") #youtube song url
+API_KEY = getenv("API_KEY", "26baf2_2wi-UCXNMoPGxDX1vmH-oiLUJow6jhPH") # youtube song api key, generate free key or buy paid plan from panel.thequickearn.xyz
 
 UPSTREAM_REPO = getenv(
     "UPSTREAM_REPO",
