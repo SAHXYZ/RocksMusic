@@ -1,31 +1,58 @@
-pyrofork
-aiofiles
-aiohttp
-beautifulsoup4
-dnspython
-ffmpeg-python
-gitpython
-hachoir
-heroku3
-httpx[http2]==0.25.2
-motor
-numpy
-opencv-python
-pillow==9.5.0
-psutil
+# ─────────────────────────────────────────────
+# 🔹 Core Telegram & Pyrogram Libraries
+# ─────────────────────────────────────────────
+git+https://github.com/KurimuzonAkuma/pyrogram.git@2ae00a2710dd3e347798473f3dd784e9639edb1a
 py-tgcalls==0.9.7
 pytgcrypto
+pyrofork
 kurigram
-git+https://github.com/KurimuzonAkuma/pyrogram.git@2ae00a2710dd3e347798473f3dd784e9639edb1a
+
+# ─────────────────────────────────────────────
+# 🔹 Async, HTTP, and Utility Libraries
+# ─────────────────────────────────────────────
+aiofiles
+aiohttp
+httpx[http2]==0.25.2
+heroku3
+motor
+dnspython
+requests
 python-dotenv
 pyyaml
-requests
-speedtest-cli
-spotipy
-unidecode
-uvloop; sys_platform != "win32"
-yt-dlp
+
+# ─────────────────────────────────────────────
+# 🔹 Data Processing & Media
+# ─────────────────────────────────────────────
+ffmpeg-python
+hachoir
+pillow==9.5.0
+opencv-python
+numpy
+psutil
+
+# ─────────────────────────────────────────────
+# 🔹 Downloaders, Search & Parsing
+# ─────────────────────────────────────────────
+yt-dlp>=2024.10.07
 youtube-search
 youtube-search-python
+beautifulsoup4
+unidecode
 
+# ─────────────────────────────────────────────
+# 🔹 Audio / Music / API Helpers
+# ─────────────────────────────────────────────
+spotipy
+speedtest-cli
 
+# ─────────────────────────────────────────────
+# 🔹 System & Optimization
+# ─────────────────────────────────────────────
+uvloop; sys_platform != "win32"
+gitpython
+
+# ─────────────────────────────────────────────
+# ✅ Optional Dependencies for Local Testing
+# (safe to keep for Heroku too)
+# ─────────────────────────────────────────────
+# loguru
