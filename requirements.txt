@@ -1,28 +1,22 @@
-# ─────────────────────────────────────────────
-# 🔹 Core Telegram & Pyrogram Libraries
-# ─────────────────────────────────────────────
+# Core Tele libs
 git+https://github.com/KurimuzonAkuma/pyrogram.git@2ae00a2710dd3e347798473f3dd784e9639edb1a
 py-tgcalls==0.9.7
 pytgcrypto
 pyrofork
 kurigram
 
-# ─────────────────────────────────────────────
-# 🔹 Async, HTTP, and Utility Libraries
-# ─────────────────────────────────────────────
+# Async/HTTP
 aiofiles
 aiohttp
 httpx[http2]==0.25.2
-heroku3
-motor
-dnspython
 requests
 python-dotenv
 pyyaml
+heroku3
+motor
+dnspython
 
-# ─────────────────────────────────────────────
-# 🔹 Data Processing & Media
-# ─────────────────────────────────────────────
+# Media/Processing
 ffmpeg-python
 hachoir
 pillow==9.5.0
@@ -30,29 +24,17 @@ opencv-python
 numpy
 psutil
 
-# ─────────────────────────────────────────────
-# 🔹 Downloaders, Search & Parsing
-# ─────────────────────────────────────────────
+# Downloaders/Search
 yt-dlp>=2024.10.07
 youtube-search
 youtube-search-python
 beautifulsoup4
 unidecode
 
-# ─────────────────────────────────────────────
-# 🔹 Audio / Music / API Helpers
-# ─────────────────────────────────────────────
+# Extras
 spotipy
 speedtest-cli
 
-# ─────────────────────────────────────────────
-# 🔹 System & Optimization
-# ─────────────────────────────────────────────
+# System
 uvloop; sys_platform != "win32"
 gitpython
-
-# ─────────────────────────────────────────────
-# ✅ Optional Dependencies for Local Testing
-# (safe to keep for Heroku too)
-# ─────────────────────────────────────────────
-# loguru
