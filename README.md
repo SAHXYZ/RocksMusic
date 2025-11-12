@@ -82,7 +82,7 @@
    ```
 5. **Clone the Repository**
    ```bash
-   git clone https://github.com/venompratap/RocksMusic && cd RocksMusic
+   git clone https://github.com/SAHXYZ/RocksMusic && cd RocksMusic
    ```
 6. **Install Requirements**
    ```bash
