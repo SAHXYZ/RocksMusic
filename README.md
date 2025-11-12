@@ -15,16 +15,6 @@
 
 ---
 
-<p align="center">
-  <a href="https://venomhost.in/">
-    <img src="https://img.shields.io/badge/Cheapest%20Web%20Hosting-1A237E?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cheapest Web Hosting">
-  </a>
-  <a href="https://t.me/venom_pratap">
-    <img src="https://img.shields.io/badge/Contact%20Owner-2E64FE?style=for-the-badge&logo=telegram&logoColor=white" alt="Contact Owner">
-  </a>
-</p>
-
-
 ---
 
 #### 🛠️  Api For Music bot
@@ -54,7 +44,7 @@
 <h2 align="center">🚀 One-Click Deploy to Heroku</h2>
 
 <p align="center">
-  <a href="https://dashboard.heroku.com/new?template=https://github.com/venompratap/RocksMusic">
+  <a href="https://dashboard.heroku.com/new?template=https://github.com/SAHXYZ/RocksMusic">
     <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" />
   </a>
 </p>
@@ -135,7 +125,7 @@ The Rocks Music Bot offers a range of commands to enhance your music listening e
 | /stop                 | Stop the bot and clear the queue.           |
 | /queue                | Display the list of songs in the queue.     |
 
-For a full list of commands, use /help in [telegram](https://t.me/venomumusicBot).
+For a full list of commands, use /help in [telegram](https://t.me/ValerieMusicBot).
 
 ---
 
@@ -144,10 +134,10 @@ For a full list of commands, use /help in [telegram](https://t.me/venomumusicBot
 Stay updated with the latest features and improvements to Rocks Music Bot:
 
 <p align="center">
-  <a href="https://telegram.me/Rockspratapchat">
+  <a href="https://telegram.me/+2HpAd1kBDRo1NzY1">
     <img src="https://img.shields.io/badge/Join-Support%20Group-blue?style=for-the-badge&logo=telegram">
   </a>
-  <a href="https://telegram.me/venompratap">
+  <a href="https://telegram.me/Pubglovers_Shayri_lovers">
     <img src="https://img.shields.io/badge/Join-Update%20Channel-blue?style=for-the-badge&logo=telegram">
   </a>
 </p>
@@ -177,5 +167,5 @@ This project is licensed under the MIT License. For more details, see the [LICEN
 ### 🙏 Acknowledgements
 
 Thanks to all the contributors, supporters, and users of the Rocks Music Bot. Your feedback and support keep us going!
-- [Rocks Music Bot](https://t.me/Rocksumusicbot) and [Rocks Music](https://github.com/Rockspratap/RocksMusic) For their Source Codes.
+- [Rocks Music Bot](https://t.me/ValerieMusicbot) and [Rocks Music](https://github.com/SAHXYZ/RocksMusic) For their Source Codes.
 - for invaluable assistance in resolving the IP ban issue.
