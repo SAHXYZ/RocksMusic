@@ -3,11 +3,11 @@ import pytz
 from datetime import datetime
 from pyrogram.errors import UserNotParticipant
 from RocksMusic import app
-from RocksMusic.config import LOG_GROUP_ID
+from RocksMusic.config.config import LOG_GROUP_ID   # 🔥 FIXED PATH
 
 # -------------------------------------------------------------
 # Storage for all groups where bot was added (Mode 2)
-# This list is filled by joinlog.py using add_group(chat_id)
+# Filled by joinlog.py using add_group(chat_id)
 # -------------------------------------------------------------
 GROUP_LIST = set()
 
@@ -46,7 +46,6 @@ def build_log_message(chat, remover="Unknown Admin"):
 async def check_bot_removal():
     await app.start()
 
-    # Get main bot's ID
     BOT_ID = (await app.get_me()).id
 
     while True:
@@ -54,28 +53,26 @@ async def check_bot_removal():
 
         for chat_id in list(GROUP_LIST):
             try:
-                # If bot is present → this works normally
+                # Check if bot is still inside
                 await app.get_chat_member(chat_id, BOT_ID)
 
             except UserNotParticipant:
-                # BOT IS REMOVED → SEND LEAVE LOG
+                # BOT REMOVED → LOG IT
                 try:
                     chat = await app.get_chat(chat_id)
                     msg = build_log_message(chat)
-
                     await app.send_message(LOG_GROUP_ID, msg)
 
                 except Exception:
                     pass
 
-                # Mark for cleanup
                 removed_groups.append(chat_id)
 
-        # Remove from list
+        # Cleanup
         for g in removed_groups:
             GROUP_LIST.discard(g)
 
-        await asyncio.sleep(10)   # scan interval
+        await asyncio.sleep(10)
 
 
 # Start background scanner
