@@ -13,24 +13,24 @@ async def bot_added_log(_, update: ChatMemberUpdated):
         new = update.new_chat_member
         old = update.old_chat_member
 
-        # Only trigger when THIS bot is added
+        # Only when this bot is added to a group/channel
         if not new or not new.user or new.user.id != app.id:
             return
 
-        # Ignore if bot was already a member earlier
+        # Ignore if bot was already a member/admin
         if old and old.status in ["member", "administrator"]:
             return
 
         chat = update.chat
         adder = update.from_user
 
-        # Chat link if username exists
+        # Group link or fallback
         if chat.username:
             chat_link = f"https://t.me/{chat.username}"
         else:
             chat_link = "No Public Link"
 
-        # Date & Time (IST)
+        # IST Date & Time
         tz = pytz.timezone("Asia/Kolkata")
         now = datetime.now(tz)
         date = now.strftime("%d-%b-%Y")
@@ -53,7 +53,7 @@ async def bot_added_log(_, update: ChatMemberUpdated):
 ──────────────⟐
 ⟞ Dᴀᴛᴇ : {date}
 ⟟ Tɪᴍᴇ : {time}
-⟪ Lᴏɢ : Nᴇᴡ Aᴄᴛɪᴠᴇ Gʀᴏᴜᴘ Aᴅᴅᴇᴅ
+⟪ Lᴏɢ : Nᴇᴡ Aᴄᴛɪᴠᴇ Gʀᴏᴜᴘ Aᴅᴅᴇᴅ 
 ──────────────⟐
 """
 
