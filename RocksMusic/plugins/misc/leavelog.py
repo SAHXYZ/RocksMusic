@@ -1,52 +1,63 @@
+# RocksMusic/plugins/misc/leavelog.py
+
+import asyncio
 from datetime import datetime, timedelta, timezone
-from pyrogram.types import ChatMemberUpdated
 
 from RocksMusic import app, userbot
 from config import LOG_GROUP_ID
 
+from pyrogram.errors import (
+    ChatAdminRequired,
+    PeerIdInvalid,
+    UserNotParticipant,
+)
+
+# Timezone
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
-@userbot.on_chat_member_updated()
-async def assistant_detect_bot_removal(_, update: ChatMemberUpdated):
-    try:
-        bot = await app.get_me()
+async def check_bot_status():
+    await asyncio.sleep(10)  # Wait for bot + assistant to fully start
 
-        old = update.old_chat_member
-        new = update.new_chat_member
+    bot = await app.get_me()
 
-        # Event must be about THIS main bot
-        if not old or old.user.id != bot.id:
-            return
+    print("[LeaveLog] Background bot removal scanner started...")
 
-        # Detect removal
-        if new.status not in ["kicked", "left", "banned"]:
-            return
+    while True:
+        try:
+            # Iterate through ALL chats where assistant is present
+            async for dialog in userbot.iter_dialogs():
+                chat = dialog.chat
+                chat_id = chat.id
 
-        chat = update.chat
-        remover = update.from_user
+                try:
+                    # Check if the bot is still in that chat
+                    member = await app.get_chat_member(chat_id, bot.id)
 
-        chat_title = chat.title or "Unknown"
-        chat_id = chat.id
-        chat_link = "Pʀɪᴠᴀᴛᴇ / Uɴᴀᴠᴀɪʟᴀʙʟᴇ"
+                    # Bot is still member/admin → skip
+                    if member.status in ["member", "administrator"]:
+                        continue
 
-        now = datetime.now(IST)
-        date = now.strftime("%d-%b-%Y")
-        time = now.strftime("%I:%M %p")
+                except UserNotParticipant:
+                    # Bot was removed OR banned
+                    now = datetime.now(IST)
+                    date = now.strftime("%d-%b-%Y")
+                    time = now.strftime("%I:%M %p")
 
-        remover_name = remover.mention if remover else "Unknown"
-        remover_id = remover.id if remover else "Unknown"
+                    group_name = chat.title or "Unknown"
+                    remover_name = "Unknown"
+                    remover_id = "Unknown"
 
-        text = f"""
+                    text = f"""
 ⧈⧈⧈ Bᴏᴛ Dɪꜱᴄᴏɴɴᴇᴄᴛɪᴏɴ Aʟᴇʀᴛ ⧈⧈⧈
 ──────────────⟐
-➤ Gʀᴏᴜᴘ : {chat_title}
+➤ Gʀᴏᴜᴘ : {group_name}
 ➤ Iᴅ : <code>{chat_id}</code>
-➤ Lɪɴᴋ : {chat_link}
+➤ Lɪɴᴋ : Private / Unavailable
 ──────────────⟐
 ➤ Aᴄᴛɪᴏɴ : Bᴏᴛ Wᴀꜱ Rᴇᴍᴏᴠᴇᴅ / Kɪᴄᴋᴇᴅ / Bᴀɴɴᴇᴅ
 ➤ Bʏ : {remover_name}
-    ⟿   ᴜꜱᴇʀ ɪᴅ : {remover_id}
+    ⟿   User ID : {remover_id}
 ──────────────⟐
 ➤ Dᴀᴛᴇ : {date}
 ➤ Tɪᴍᴇ : {time}
@@ -54,7 +65,27 @@ async def assistant_detect_bot_removal(_, update: ChatMemberUpdated):
 ⧉ Lᴏɢ : Gʀᴏᴜᴘ Rᴇᴍᴏᴠᴀʟ Cᴏɴꜰɪʀᴍᴇᴅ
 """
 
-        await app.send_message(LOG_GROUP_ID, text, disable_web_page_preview=True)
+                    try:
+                        await app.send_message(
+                            LOG_GROUP_ID,
+                            text,
+                            disable_web_page_preview=True,
+                        )
+                        print(f"[LeaveLog] Removal detected in {group_name}")
 
-    except Exception as e:
-        print(f"[LeaveLogError] {e}")
+                    except Exception as e:
+                        print(f"[LeaveLog] Failed to send log: {e}")
+
+                except (ChatAdminRequired, PeerIdInvalid):
+                    # No access, invalid chat, etc.
+                    pass
+
+        except Exception as e:
+            print(f"[LeaveLog MAIN LOOP ERROR] {e}")
+
+        # Check every 10 seconds
+        await asyncio.sleep(10)
+
+
+# Start background monitoring
+app.loop.create_task(check_bot_status())
