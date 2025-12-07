@@ -1,10 +1,13 @@
 from pyrogram import filters
 from pyrogram.types import ChatMemberUpdated
-from datetime import datetime
-import pytz
+from datetime import datetime, timedelta, timezone
 
 from RocksMusic import app
 from config import LOG_GROUP_ID
+
+
+# Indian timezone without pytz
+IST = timezone(timedelta(hours=5, minutes=30))
 
 
 @app.on_chat_member_updated(filters.chat_member_updated)
@@ -13,29 +16,29 @@ async def bot_added_log(_, update: ChatMemberUpdated):
         new = update.new_chat_member
         old = update.old_chat_member
 
-        # Only when this bot is added to a group/channel
+        # Only run if THIS bot is added
         if not new or not new.user or new.user.id != app.id:
             return
 
-        # Ignore if bot was already a member/admin
+        # Ignore if bot was already present
         if old and old.status in ["member", "administrator"]:
             return
 
         chat = update.chat
         adder = update.from_user
 
-        # Group link or fallback
+        # Chat link
         if chat.username:
             chat_link = f"https://t.me/{chat.username}"
         else:
             chat_link = "No Public Link"
 
-        # IST Date & Time
-        tz = pytz.timezone("Asia/Kolkata")
-        now = datetime.now(tz)
+        # Date & time in IST
+        now = datetime.now(IST)
         date = now.strftime("%d-%b-%Y")
         time = now.strftime("%I:%M %p")
 
+        # Final formatted message
         text = f"""
 ⟐────────────────────────────⟐
   ⌬ Nᴇᴡ Gʀᴏᴜᴘ Aᴅᴅᴇᴅ Tᴏ Tʜᴇ Bᴏᴛ ⌬
