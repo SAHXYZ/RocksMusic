@@ -1,43 +1,41 @@
-from pyrogram.types import ChatMemberUpdated
 from datetime import datetime, timedelta, timezone
+from pyrogram.types import ChatMemberUpdated
 
-from RocksMusic import app
+from RocksMusic import app, userbot
 from config import LOG_GROUP_ID
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
-@app.on_my_chat_member()
-async def bot_removed_log(_, update: ChatMemberUpdated):
+@userbot.on_chat_member_updated()
+async def assistant_detect_bot_removal(_, update: ChatMemberUpdated):
     try:
+        bot = await app.get_me()
+
         old = update.old_chat_member
         new = update.new_chat_member
 
-        # Must be specifically about THIS bot (guaranteed in on_my_chat_member)
-        if new.user.id != app.id:
+        # Event must be about THIS main bot
+        if not old or old.user.id != bot.id:
             return
 
-        # Bot must have been removed
-        removed_statuses = ["kicked", "banned", "left"]
-
-        if new.status not in removed_statuses:
+        # Detect removal
+        if new.status not in ["kicked", "left", "banned"]:
             return
 
         chat = update.chat
-        actor = update.from_user  # Admin who removed the bot (may be None)
+        remover = update.from_user
 
-        chat_title = chat.title
+        chat_title = chat.title or "Unknown"
         chat_id = chat.id
-
-        # No username because bot is kicked
         chat_link = "Pʀɪᴠᴀᴛᴇ / Uɴᴀᴠᴀɪʟᴀʙʟᴇ"
 
         now = datetime.now(IST)
         date = now.strftime("%d-%b-%Y")
         time = now.strftime("%I:%M %p")
 
-        actor_name = actor.mention if actor else "Unknown"
-        actor_id = actor.id if actor else "Unknown"
+        remover_name = remover.mention if remover else "Unknown"
+        remover_id = remover.id if remover else "Unknown"
 
         text = f"""
 ⧈⧈⧈ Bᴏᴛ Dɪꜱᴄᴏɴɴᴇᴄᴛɪᴏɴ Aʟᴇʀᴛ ⧈⧈⧈
@@ -47,8 +45,8 @@ async def bot_removed_log(_, update: ChatMemberUpdated):
 ➤ Lɪɴᴋ : {chat_link}
 ──────────────⟐
 ➤ Aᴄᴛɪᴏɴ : Bᴏᴛ Wᴀꜱ Rᴇᴍᴏᴠᴇᴅ / Kɪᴄᴋᴇᴅ / Bᴀɴɴᴇᴅ
-➤ Bʏ : {actor_name}
-    ⟿   ᴜꜱᴇʀ ɪᴅ : {actor_id}
+➤ Bʏ : {remover_name}
+    ⟿   ᴜꜱᴇʀ ɪᴅ : {remover_id}
 ──────────────⟐
 ➤ Dᴀᴛᴇ : {date}
 ➤ Tɪᴍᴇ : {time}
