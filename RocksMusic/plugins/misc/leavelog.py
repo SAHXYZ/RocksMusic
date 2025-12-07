@@ -7,39 +7,37 @@ from config import LOG_GROUP_ID
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
-@app.on_chat_member_updated()
+@app.on_my_chat_member()
 async def bot_removed_log(_, update: ChatMemberUpdated):
     try:
         old = update.old_chat_member
         new = update.new_chat_member
 
-        # Event must be about THIS BOT
-        if not old or not old.user or old.user.id != app.id:
+        # Must be specifically about THIS bot (guaranteed in on_my_chat_member)
+        if new.user.id != app.id:
             return
 
-        # Valid removal statuses in Pyrogram v2
-        removed_states = ["kicked", "left", "banned"]
+        # Bot must have been removed
+        removed_statuses = ["kicked", "banned", "left"]
 
-        # Check if bot was removed
-        if new.status not in removed_states:
+        if new.status not in removed_statuses:
             return
 
         chat = update.chat
-        remover = update.from_user  # Might be None
+        actor = update.from_user  # Admin who removed the bot (may be None)
 
         chat_title = chat.title
         chat_id = chat.id
 
+        # No username because bot is kicked
         chat_link = "Pʀɪᴠᴀᴛᴇ / Uɴᴀᴠᴀɪʟᴀʙʟᴇ"
 
-        # Date & time
         now = datetime.now(IST)
         date = now.strftime("%d-%b-%Y")
         time = now.strftime("%I:%M %p")
 
-        # Fix: Safe remover details
-        remover_name = remover.mention if remover else "Unknown"
-        remover_id = remover.id if remover else "Unknown"
+        actor_name = actor.mention if actor else "Unknown"
+        actor_id = actor.id if actor else "Unknown"
 
         text = f"""
 ⧈⧈⧈ Bᴏᴛ Dɪꜱᴄᴏɴɴᴇᴄᴛɪᴏɴ Aʟᴇʀᴛ ⧈⧈⧈
@@ -49,8 +47,8 @@ async def bot_removed_log(_, update: ChatMemberUpdated):
 ➤ Lɪɴᴋ : {chat_link}
 ──────────────⟐
 ➤ Aᴄᴛɪᴏɴ : Bᴏᴛ Wᴀꜱ Rᴇᴍᴏᴠᴇᴅ / Kɪᴄᴋᴇᴅ / Bᴀɴɴᴇᴅ
-➤ Bʏ : {remover_name}
-    ⟿   ᴜꜱᴇʀ ɪᴅ : {remover_id}
+➤ Bʏ : {actor_name}
+    ⟿   ᴜꜱᴇʀ ɪᴅ : {actor_id}
 ──────────────⟐
 ➤ Dᴀᴛᴇ : {date}
 ➤ Tɪᴍᴇ : {time}
