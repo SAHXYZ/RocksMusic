@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 from RocksMusic import app
 from config import LOG_GROUP_ID
 
-# Indian timezone (same as joinlog)
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
@@ -14,31 +13,34 @@ async def bot_removed_log(_, update: ChatMemberUpdated):
         old = update.old_chat_member
         new = update.new_chat_member
 
-        # This event must be about THIS bot
+        # Event must be about THIS BOT
         if not old or not old.user or old.user.id != app.id:
             return
 
-        # Bot must have been removed/kicked/banned
+        # Valid removal statuses in Pyrogram v2
         removed_states = ["kicked", "left", "banned"]
 
+        # Check if bot was removed
         if new.status not in removed_states:
             return
 
         chat = update.chat
-        remover = update.from_user
+        remover = update.from_user  # Might be None
 
         chat_title = chat.title
         chat_id = chat.id
 
-        # Since bot is removed, link is always unavailable
         chat_link = "Pʀɪᴠᴀᴛᴇ / Uɴᴀᴠᴀɪʟᴀʙʟᴇ"
 
-        # Date & Time (IST)
+        # Date & time
         now = datetime.now(IST)
         date = now.strftime("%d-%b-%Y")
         time = now.strftime("%I:%M %p")
 
-        # Final formatted message
+        # Fix: Safe remover details
+        remover_name = remover.mention if remover else "Unknown"
+        remover_id = remover.id if remover else "Unknown"
+
         text = f"""
 ⧈⧈⧈ Bᴏᴛ Dɪꜱᴄᴏɴɴᴇᴄᴛɪᴏɴ Aʟᴇʀᴛ ⧈⧈⧈
 ──────────────⟐
@@ -46,9 +48,9 @@ async def bot_removed_log(_, update: ChatMemberUpdated):
 ➤ Iᴅ : <code>{chat_id}</code>
 ➤ Lɪɴᴋ : {chat_link}
 ──────────────⟐
-➤ Aᴄᴛɪᴏɴ : Bᴏᴛ Wᴀꜱ Kɪᴄᴋᴇᴅ / Bᴀɴɴᴇᴅ
-➤ Bʏ : {remover.mention if remover else "Unknown"}
-    ⟿   ᴜꜱᴇʀ ɪᴅ : {remover.id if remover else "Unknown"}
+➤ Aᴄᴛɪᴏɴ : Bᴏᴛ Wᴀꜱ Rᴇᴍᴏᴠᴇᴅ / Kɪᴄᴋᴇᴅ / Bᴀɴɴᴇᴅ
+➤ Bʏ : {remover_name}
+    ⟿   ᴜꜱᴇʀ ɪᴅ : {remover_id}
 ──────────────⟐
 ➤ Dᴀᴛᴇ : {date}
 ➤ Tɪᴍᴇ : {time}
@@ -56,11 +58,7 @@ async def bot_removed_log(_, update: ChatMemberUpdated):
 ⧉ Lᴏɢ : Gʀᴏᴜᴘ Rᴇᴍᴏᴠᴀʟ Cᴏɴꜰɪʀᴍᴇᴅ
 """
 
-        await app.send_message(
-            LOG_GROUP_ID,
-            text,
-            disable_web_page_preview=True
-        )
+        await app.send_message(LOG_GROUP_ID, text, disable_web_page_preview=True)
 
     except Exception as e:
         print(f"[LeaveLogError] {e}")
