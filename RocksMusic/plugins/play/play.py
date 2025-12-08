@@ -20,18 +20,103 @@ from RocksMusic.utils.inline import (
     slider_markup,
     track_markup,
 )
-from RocksMusic.utils.logger import play_logs
 from RocksMusic.utils.stream.stream import stream
 from config import BANNED_USERS, lyrical
 
 
+# Custom play log for every song play
+async def play_logs(message: Message, streamtype: str):
+    chat = message.chat
+    user = message.from_user
+
+    # Bot mention (clickable name, no @ shown)
+    try:
+        me = await app.get_me()
+        bot_mention = me.mention  # clickable, shows bot's name, not @username
+    except Exception:
+        bot_mention = "RocksMusic"
+
+    # Chat username / user username
+    chat_username = (
+        f"@{chat.username}"
+        if getattr(chat, "username", None)
+        else "Nᴏ ᴜsᴇʀɴᴀᴍᴇ"
+    )
+    user_username = (
+        f"@{user.username}" if user.username else "Nᴏ ᴜsᴇʀɴᴀᴍᴇ"
+    )
+
+    # Chat name (title for groups / supergroups, or first_name for PM)
+    chat_name = getattr(chat, "title", None) or getattr(
+        chat, "first_name", "Private Chat"
+    )
+
+    # Try to extract a nice query text
+    query_text = "Unknown"
+    if message.text:
+        parts = message.text.split(None, 1)
+        if len(parts) > 1:
+            query_text = parts[1]
+        else:
+            query_text = parts[0]
+    elif message.reply_to_message:
+        rt = message.reply_to_message
+        if getattr(rt, "audio", None):
+            if rt.audio.title:
+                query_text = rt.audio.title
+            elif rt.audio.file_name:
+                query_text = rt.audio.file_name
+        elif getattr(rt, "video", None) and rt.video.file_name:
+            query_text = rt.video.file_name
+
+    log_text = f"""⟢ 𝑷𝒐𝒘𝒆𝒓𝒆𝒅 𝑩𝒚 • {bot_mention}
+
+
+◈━━───────────━━➣
+ ⎈ Mᴇʟᴏᴅʏ Sᴛʀᴇᴀᴍɪɴɢ ⎈
+◈━━───────────━━➣
+
+┏━━━ ⟢ Cʜᴀᴛ Iɴꜰᴏ ━━━➣
+┃  ⟣ Iᴅ       : {chat.id}
+┃  ⟢ Nᴀᴍᴇ     :
+┃       » {chat_name}
+┃  ⟡ Uꜱᴇʀɴᴀᴍᴇ :
+┃       » {chat_username}
+┗━━━━━━━━━━━━━━━➣
+
+┏━━━ ⟠ Rᴇǫᴜᴇꜱᴛᴇʀ Dᴀᴛᴀ ━➣
+┃  ⟟ Uꜱᴇʀ Iᴅ : {user.id}
+┃  ⟜ Nᴀᴍᴇ     :
+┃       » {user.mention}
+┃  ⟜ Hᴀɴᴅʟᴇ   :
+┃       » {user_username}
+┗━━━━━━━━━━━━━━━➣
+
+┏━━━ ⧁ Tʀᴀᴄᴋ Dᴇᴛᴀɪʟs ━━➣
+┃  ⧂ Qᴜᴇʀʏ    : {query_text}
+┃  ⧂ Sᴏᴜʀᴄᴇ   : {streamtype}
+┗━━━━━━━━━━━━━━━➣
+"""
+
+    try:
+        await app.send_message(
+            chat_id=config.LOG_GROUP_ID,
+            text=log_text,
+            disable_web_page_preview=True,
+        )
+    except Exception as e:
+        # Don't crash play if log fails
+        print(f"Error sending play log: {e}")
+
+
 @app.on_message(
-   filters.command(["play", "vplay", "cplay", "cvplay", "playforce", "vplayforce", "cplayforce", "cvplayforce"] ,prefixes=["/", "!", "%", ",", "", ".", "@", "#"])
-            
+   filters.command(
+       ["play", "vplay", "cplay", "cvplay", "playforce", "vplayforce", "cplayforce", "cvplayforce"],
+       prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+   )
     & filters.group
     & ~BANNED_USERS
 )
-
 @PlayWrapper
 async def play_commnd(
     client,
@@ -660,4 +745,3 @@ async def slider_queries(client, CallbackQuery, _):
         return await CallbackQuery.edit_message_media(
             media=med, reply_markup=InlineKeyboardMarkup(buttons)
         )
-
