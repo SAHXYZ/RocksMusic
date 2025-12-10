@@ -32,7 +32,7 @@ HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 # Get it from http://dashboard.heroku.com/account
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
 
-API_URL = getenv("API_URL", "https://api.thequickearn.xyz")  # YouTube song API base URL
+API_URL = getenv("API_URL", "https://pytdbotapi.thequickearn.xyz")  # YouTube song API base URL
 API_KEY = getenv("API_KEY", None)  # YouTube song API key (optional)
 
 # COOKIES_URL can contain one or multiple URLs separated by spaces or commas,
