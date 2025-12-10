@@ -71,12 +71,14 @@ async def start_pm(client, message: Message, _):
                 title, duration, views, published, channellink, channel, app.mention
             )
 
-            key = InlineKeyboardMarkup([
+            key = InlineKeyboardMarkup(
                 [
-                    InlineKeyboardButton(text=_["S_B_8"], url=link),
-                    InlineKeyboardButton(text=_["S_B_9"], url=config.SUPPORT_GROUP),
+                    [
+                        InlineKeyboardButton(text=_["S_B_8"], url=link),
+                        InlineKeyboardButton(text=_["S_B_9"], url=config.SUPPORT_GROUP),
+                    ]
                 ]
-            ])
+            )
 
             await m.delete()
             await app.send_photo(
@@ -91,7 +93,6 @@ async def start_pm(client, message: Message, _):
     out = private_panel(_)
     UP, CPU, RAM, DISK = await bot_sys_stats()
 
-    # DEBUG — SEE WHICH START_2 IS LOADED
     try:
         print("[DEBUG LOADED START_2] =>", _["start_2"][:200])
     except Exception as e:
@@ -110,10 +111,39 @@ async def start_pm(client, message: Message, _):
         reply_markup=InlineKeyboardMarkup(out),
     )
 
+    # ============================================
+    # 🔥 CUSTOM PREMIUM LOG MESSAGE
+    # ============================================
+
     if await is_on_off(2):
+        bot_username = app.username
+        user = message.from_user
+        username = user.username if user.username else "No_Username"
+
+        log_text = (
+            "┏━━━──────────➣\n"
+            "╰➢ 🜲 S T A R T   L O G\n"
+            "┆\n"
+            f"┠─▹ Bot ⥈ @{bot_username}\n"
+            "┆ \n"
+            "┠─▹ #Aᴄᴛɪᴠᴀᴛᴇᴅ_ᴛʜᴇ_ʙᴏᴛ\n"
+            "┆\n"
+            "┏━━━────────────➣\n"
+            "╰➢ 🜲 U S E R   I N F O\n"
+            "┆\n"
+            f"┠─▹ Nᴀᴍᴇ ⥈ {user.mention}\n"
+            "┆\n"
+            f"┠─▹ Iᴅ ⥈ {user.id}\n"
+            "┆\n"
+            f"┠─▹ Tᴀɢ ⥈ @{username}\n"
+            "┆\n"
+            "┗━━━━━━❪ ⌬ ❫━━━━━━━➣"
+        )
+
         await app.send_message(
             chat_id=config.LOG_GROUP_ID,
-            text=f"{message.from_user.mention} started the bot.",
+            text=log_text,
+            disable_web_page_preview=True
         )
 
 
