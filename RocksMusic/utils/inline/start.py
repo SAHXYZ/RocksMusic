@@ -4,7 +4,7 @@ from RocksMusic import app
 
 
 def start_panel(_):
-    return [
+    buttons = [
         [
             InlineKeyboardButton(
                 text=_["S_B_1"],
@@ -16,10 +16,11 @@ def start_panel(_):
             ),
         ]
     ]
+    return buttons
 
 
 def private_panel(_):
-    return [
+    buttons = [
         [
             InlineKeyboardButton(
                 text=_["S_B_3"],
@@ -49,3 +50,4 @@ def private_panel(_):
             ),
         ],
     ]
+    return buttons
