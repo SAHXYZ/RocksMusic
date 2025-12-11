@@ -22,32 +22,33 @@ def start_panel(_):
 def private_panel(_):
     buttons = [
         [
-            InlineKeyboardButton(
-                text=_["S_B_3"],
-                url=f"https://t.me/{app.username}?startgroup=true",
-            )
-        ],
-        [
-            InlineKeyboardButton(
-                text=_["S_B_4"],
-                callback_data="settings_back_helper",
-            ),
-        ],
-        [
-            InlineKeyboardButton(
-                text="⌈♚ ⋆ ❖ Pʀɪᴍᴇ Aᴜᴛʜᴏʀɪᴛʏ ❖ ⋆ ♚⌋",
-                url="https://t.me/ROCKS_ROBOTS/73",
-            ),
-            InlineKeyboardButton(
-                text=_["S_B_2"],
-                url="https://t.me/Shayari_Music_Lovers/16",
-            ),
-        ],
-        [
-            InlineKeyboardButton(
-                text=_["S_B_6"],
-                url=config.SUPPORT_CHANNEL,
-            ),
-        ],
+    InlineKeyboardButton(
+        text=_["S_B_3"],
+        url=f"https://t.me/{app.username}?startgroup=true",
+    )
+],
+[
+    InlineKeyboardButton(
+        text=_["S_B_4"],
+        callback_data="settings_back_helper",
+    ),
+],
+[
+    InlineKeyboardButton(
+        text=_["S_B_5"],
+        url="https://t.me/ROCKS_ROBOTS/73",
+    ),
+    InlineKeyboardButton(
+        text=_["S_B_2"],
+        url="https://t.me/Shayari_Music_Lovers/16",
+    ),
+],
+[
+    InlineKeyboardButton(
+        text=_["S_B_6"],
+        url=config.SUPPORT_CHANNEL,
+    ),
+],
+
     ]
     return buttons
