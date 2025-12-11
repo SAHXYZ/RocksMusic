@@ -12,7 +12,7 @@ def start_panel(_):
             ),
             InlineKeyboardButton(
                 text=_["S_B_2"],
-                url=config.SUPPORT_GROUP,
+                url="https://t.me/Shayari_Music_Lovers/16",
             ),
         ]
     ]
@@ -40,7 +40,7 @@ def private_panel(_):
             ),
             InlineKeyboardButton(
                 text=_["S_B_2"],
-                url=config.SUPPORT_GROUP,
+                url="https://t.me/Shayari_Music_Lovers/16",
             ),
         ],
         [
