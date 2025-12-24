@@ -1,0 +1,17 @@
+# Environment
+.env
+
+# Python Caches
+__pycache__/
+.cache/
+cache/
+
+# Bot Data
+downloads/
+log.txt
+unknown_errors.txt
+
+# OS / Editor Files
+*.log
+*.sqlite
+*.pyc
